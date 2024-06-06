@@ -1,9 +1,9 @@
 "use client";
 
 import { use } from "react";
+import { z } from "zod";
 
-import type { RouterOutputs } from "@acme/api";
-import { CreatePostSchema } from "@acme/db/schema";
+import type { RouterInputs, RouterOutputs } from "@acme/api";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import {
@@ -20,64 +20,65 @@ import { toast } from "@acme/ui/toast";
 import { api } from "~/trpc/react";
 
 export function CreatePostForm() {
-  const form = useForm({
-    schema: CreatePostSchema,
-    defaultValues: {
-      content: "",
-      title: "",
-    },
-  });
+  // const form = useForm({
+  //   schema: PostCreateInput,
+  //   defaultValues: {
+  //     content: "",
+  //     title: "",
+  //   },
+  // });
 
   const utils = api.useUtils();
-  const createPost = api.post.create.useMutation({
-    onSuccess: async () => {
-      form.reset();
-      await utils.post.invalidate();
-    },
-    onError: (err) => {
-      toast.error(
-        err.data?.code === "UNAUTHORIZED"
-          ? "You must be logged in to post"
-          : "Failed to create post",
-      );
-    },
-  });
+  // const createPost = api.post.create.useMutation({
+  //   onSuccess: async () => {
+  //     form.reset();
+  //     await utils.post.invalidate();
+  //   },
+  //   onError: (err) => {
+  //     toast.error(
+  //       err.data?.code === "UNAUTHORIZED"
+  //         ? "You must be logged in to post"
+  //         : "Failed to create post",
+  //     );
+  //   },
+  // });
 
   return (
-    <Form {...form}>
-      <form
-        className="flex w-full max-w-2xl flex-col gap-4"
-        onSubmit={form.handleSubmit((data) => {
-          createPost.mutate(data);
-        })}
-      >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Title" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Content" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button>Create</Button>
-      </form>
-    </Form>
+    // <Form {...form}>
+    //   <form
+    //     className="flex w-full max-w-2xl flex-col gap-4"
+    //     onSubmit={form.handleSubmit((data) => {
+    //       createPost.mutate(data);
+    //     })}
+    //   >
+    //     <FormField
+    //       control={form.control}
+    //       name="title"
+    //       render={({ field }) => (
+    //         <FormItem>
+    //           <FormControl>
+    //             <Input {...field} placeholder="Title" />
+    //           </FormControl>
+    //           <FormMessage />
+    //         </FormItem>
+    //       )}
+    //     />
+    //     <FormField
+    //       control={form.control}
+    //       name="content"
+    //       render={({ field }) => (
+    //         <FormItem>
+    //           <FormControl>
+    //             <Input {...field} placeholder="Content" />
+    //           </FormControl>
+    //           <FormMessage />
+    //         </FormItem>
+    //       )}
+    //     />
+    //     <Button>Create</Button>
+    //   </form>
+    // </Form>
+    <div>Form</div>
   );
 }
 
@@ -133,8 +134,8 @@ export function PostCard(props: {
   return (
     <div className="flex flex-row rounded-lg bg-muted p-4">
       <div className="flex-grow">
-        <h2 className="text-2xl font-bold text-primary">{props.post.title}</h2>
-        <p className="mt-2 text-sm">{props.post.content}</p>
+        {/* <h2 className="text-2xl font-bold text-primary">{props.post.title}</h2> */}
+        {/* <p className="mt-2 text-sm">{props.post.content}</p> */}
       </div>
       <div>
         <Button
