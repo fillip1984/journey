@@ -21,7 +21,12 @@ export const postRouter = {
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.db.post.create({ data: { name: input.title } });
+      return ctx.db.post.create({
+        data: {
+          title: input.title,
+          content: input.content,
+        },
+      });
     }),
   delete: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
     return ctx.db.post.delete({ where: { id: input } });
