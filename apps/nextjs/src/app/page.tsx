@@ -1,6 +1,7 @@
 "use client";
 
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
+import * as echarts from "echarts";
 
 interface Avail {
   slot: number;
@@ -94,6 +95,67 @@ export default function HomePage() {
           {avails.filter((a) => a.usage?.name === "sleep").length}
         </div>
       </div>
+
+      <Chart />
     </main>
   );
 }
+
+const Chart = () => {
+  type EChartsOption = echarts.EChartsOption;
+  const chartRef = useRef<HTMLDivElement>(null);
+
+  const option: EChartsOption = {
+    tooltip: {
+      trigger: "item",
+    },
+    legend: {
+      top: "5%",
+      left: "center",
+      textStyle: {
+        color: "#ccc",
+      },
+    },
+    series: [
+      {
+        name: "Allocation",
+        type: "pie",
+        radius: ["40%", "70%"],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: "center",
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 40,
+            fontWeight: "bold",
+          },
+        },
+        labelLine: {
+          show: false,
+        },
+        data: [
+          { value: 8, name: "Sleep" },
+          { value: 16, name: "Unallocated" },
+          // { value: 580, name: "Email" },
+          // { value: 484, name: "Union Ads" },
+          // { value: 300, name: "Video Ads" },
+        ],
+      },
+    ],
+  };
+
+  useEffect(() => {
+    var chartDom = chartRef.current;
+    if (chartDom) {
+      var myChart = echarts.init(chartDom);
+      option && myChart.setOption(option);
+    }
+  }, []);
+
+  return (
+    <div className="h-full w-full bg-black text-white" ref={chartRef}></div>
+  );
+};
